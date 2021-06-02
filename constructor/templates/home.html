@@ -1,0 +1,148 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="{% static 'fabric/fabric.main.js' %} "></script>
+</head>
+<body>
+       <h1>Sam Editor</h1>
+        <div style="left:30%; top: 20%; position: absolute">
+            <button id="front_color">Front Color Change</button>
+            <button id="left_sleeve_color">Left Sleeve Color Change</button>
+            <button id="right_sleeve_color">Right Sleeve Color Change</button>
+        <button class="add-front-end-btn">Load Image</button>
+        <button id="load_logo">Load Logo</button>
+        <button class="front-end-color-btn">change front side color</button>
+            <canvas id="c" width="600" height="600"></canvas>
+
+
+        <input type="text" class="add-text">
+        <button class="add-text-btn">Add Text</button>
+        <button class="save-btn">Save</button>
+        </div>
+
+</body>
+
+<script>
+    var canvas = window._canvas = new fabric.Canvas('c');
+    var frontendImage
+    var frontendImage2
+    var frontendImage3
+    var logo_img
+
+    {#var url1='http://localhost:8000/media/uploads/newimgt.png'#}
+    var body_url1='http://localhost:8000/media/uploads/body.png'
+    {#var url2='http://localhost:8000/media/uploads/tshirtfront.png'#}
+    var left_url2='http://localhost:8000/media/uploads/left_sleeve.png'
+    var right_url3='http://localhost:8000/media/uploads/right_sleeve.png'
+    var logo_demo = 'http://localhost:8000/media/uploads/logo_demo.png'
+    {#fabric.Image.fromURL('http://fabricjs.com/assets/printio.png', function(img){#}
+    {#canvas.add(#}
+    {#    img.scale(1).set({ left: 0, top: 0, angle: 0, selectable: false})#}
+    {#);#}
+    {#});#}
+
+canvas.renderAll();
+
+document.querySelectorAll('.add-front-end-btn')[0].addEventListener('click', function(){
+    fabric.Image.fromURL(logo_demo, function (logo){
+        logo.id = "logo_sleeve";
+        logo.height = 50;
+        logo.width = 50;
+        console.log(logo)
+        logo_img=logo
+        logo.set(
+            {
+                left:15,
+                top:100,
+                resize:true,
+
+
+            }
+        )
+        canvas.add(logo)
+    },{crossOrigin:'anonymous'})
+
+
+    fabric.Image.fromURL(left_url2, function(img){
+        img.id = "body";
+        img.filters = [new fabric.Image.filters.HueRotation()];
+        frontendImage=img
+        img.set(
+            {
+                 left:10,
+                 top: 100,
+            }
+
+        )
+        img.applyFilters()
+        canvas.add(img);
+    },{crossOrigin: 'anonymous'})
+
+    fabric.Image.fromURL(body_url1, function (img2){
+        img2.id = "sleeve_left";
+        img2.filters = [new fabric.Image.filters.HueRotation()];
+        img2.applyFilters()
+        frontendImage2=img2
+        img2.set(
+            {
+                left:77,
+                top:34
+            }
+
+        )
+        canvas.add(img2);
+    },{crossOrigin: 'anonymous'});
+
+    fabric.Image.fromURL(right_url3, function(img3){
+        img3.id = "sleeve_right";
+        img3.filters = [new fabric.Image.filters.HueRotation()];
+        frontendImage3=img3
+        img3.set(
+            {
+                 left:520,
+                 top: 100,
+            }
+
+        )
+        img3.applyFilters()
+        canvas.add(img3);
+    },{crossOrigin: 'anonymous'})
+
+});
+
+document.querySelectorAll('.front-end-color-btn')[0].addEventListener('click', function() {
+
+            {#console.log(frontendImage2)#}
+         frontendImage.filters[0].rotation = 2 * Math.random() - 1;
+         frontendImage.applyFilters();
+            {#canvas.requestRenderAll();#}
+         logo_img.bringForward(frontendImage2)
+         {#console.log(frontendImage2.filters[0].rotation)#}
+         frontendImage2.filters[0].rotation = 2 * Math.random() - 1;
+         console.log(frontendImage2)
+         {#console.log(frontendImage.filters[0].rotation)#}
+         frontendImage2.applyFilters();
+         frontendImage3.filters[0].rotation = 2 * Math.random() - 1;
+         console.log(frontendImage3)
+
+         frontendImage3.applyFilters()
+         canvas.requestRenderAll();
+
+})
+
+
+document.querySelectorAll('.add-text-btn')[0].addEventListener('click', function(){
+
+    var textToAdd = new fabric.Text(document.querySelectorAll('.add-text')[0].value, {
+       fontFamily: 'arial'
+    });
+
+    canvas.add(textToAdd);
+
+});
+
+</script>
+</html>

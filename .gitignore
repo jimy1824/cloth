@@ -2,5 +2,5 @@
 /venv
 *.pyc
 .idea
-media
+#media
 .env
